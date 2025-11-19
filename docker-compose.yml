@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  impossible-travel-detector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: impossible-travel-detector:latest
+    container_name: itd-analyzer
+    volumes:
+      # Mount input data directory
+      - ./data:/data:ro
+      # Mount output directory
+      - ./output:/output
+    environment:
+      # Configuration via environment variables
+      - ITKDP_SPEED_THRESHOLD=1000.0
+      - ITKDP_LOG_LEVEL=INFO
+      - ITKDP_OUTPUT_DIR=/output
+    command: ["/data/logins.csv", "--output-dir", "/output"]
+    restart: "no"
+    user: "1000:1000"
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+  # Development service with debugging enabled
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: impossible-travel-detector:dev
+    container_name: itd-dev
+    volumes:
+      - .:/app
+      - ./data:/data
+      - ./output:/output
+    environment:
+      - ITKDP_LOG_LEVEL=DEBUG
+      - PYTHONDONTWRITEBYTECODE=1
+    command: ["bash"]
+    stdin_open: true
+    tty: true
+    user: "1000:1000"

@@ -38,33 +38,32 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Project specific
-output/
-*.log
-GeoLite2-City.mmdb
-GeoLite2-City/
+# Git
+.git/
+.gitignore
+.gitattributes
 
-# Test coverage
+# CI/CD
+.github/
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Test & Coverage
+.pytest_cache/
 .coverage
 htmlcov/
-.pytest_cache/
+*.log
 
-# Output files
+# Output files (don't include in image)
+output/
 impossible_travel.csv
 full_analysis.csv
 report.md
-test-output/
-test-final/
-results/
-data/
 
-# Development
-.mypy_cache/
-.ruff_cache/
-*.prof
-profile.stats
-
-# Documentation build
-docs/_build/
-docs/_static/
-docs/_templates/
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
